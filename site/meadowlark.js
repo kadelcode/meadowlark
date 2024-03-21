@@ -12,6 +12,12 @@ app.set('port', process.env.PORT || 3000);
 // use the static middleware
 app.use(express.static(__dirname + '/public'));
 
+// middleware to detect `test=1` in the querystring
+app.use(function(req, res, next){
+  res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
+  next();
+})
+
 // dynamic information
 var fortunes = [
 	"Conquer your fears or they will conquer you.",
@@ -20,6 +26,7 @@ var fortunes = [
 	"You will have a pleasant surprise.",
 	"Whenever possible, keep it simple.",
 ];
+
 // Homepage
 app.get('/', function (req, res) {
   res.render('home');

@@ -13,18 +13,18 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public'));
 
 // middleware to detect `test=1` in the querystring
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
   res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
   next();
-})
+});
 
 // dynamic information
-var fortunes = [
-	"Conquer your fears or they will conquer you.",
-	"Rivers need springs.",
-	"Do not fear what you don't know.",
-	"You will have a pleasant surprise.",
-	"Whenever possible, keep it simple.",
+const fortunes = [
+  'Conquer your fears or they will conquer you.',
+  'Rivers need springs.',
+  "Do not fear what you don't know.",
+  'You will have a pleasant surprise.',
+  'Whenever possible, keep it simple.'
 ];
 
 // Homepage
@@ -34,11 +34,19 @@ app.get('/', function (req, res) {
 
 // About page
 app.get('/about', function (req, res) {
-  var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+  const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
   res.render('about', {
 	  fortune: randomFortune,
 	  pageTestScript: '/qa/tests-about.js'
   });
+});
+
+// Tours
+app.get('/tours/hood-river', function (req, res) {
+  res.render('tours/hood-river');
+});
+app.get('/tours/request-group-rate', function (req, res) {
+  res.render('tours/request-group-rate');
 });
 
 // 404 catch-all handler (middleware)
